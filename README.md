@@ -127,6 +127,10 @@ O `ItemService` é instanciado uma única vez em `src/services/index.ts` e impor
 
 A busca inicial de tarefas é feita server-side via `lib/api.server.ts`, que acessa o backend diretamente usando `API_URL` (variável de servidor). As operações do cliente (criar, editar, deletar) passam pelas Route Handlers do Next.js em `app/api/tasks/`, que atuam como proxy. Essa separação evita expor a URL interna do backend ao browser e mantém explícito o que roda no servidor versus no cliente.
 
+### Sistema de notificações customizado (sem biblioteca)
+
+Em vez de adotar uma biblioteca externa como `react-hot-toast` ou `sonner`, o sistema de toast foi implementado do zero em `app/context/ToastContext.tsx` usando React Context API. Isso elimina uma dependência externa para um componente de escopo simples, mantendo controle total sobre o comportamento e o estilo das notificações.
+
 ### Pontos de melhoria
 
 - Utilizar um banco real
