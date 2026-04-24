@@ -113,6 +113,25 @@ A interface estará disponível em `http://localhost:3000`.
 }
 ```
 
+## Decisões Técnicas
+
+### Controllers separados por responsabilidade
+
+Cada operação (`GetItemsController`, `CreateItemController`, etc.) foi isolada em seu próprio arquivo em vez de agrupar tudo em um único controller. Isso facilita a leitura, os testes e a manutenção individual de cada endpoint sem risco de quebrar os demais.
+
+### Instância única do serviço (Singleton)
+
+O `ItemService` é instanciado uma única vez em `src/services/index.ts` e importado por todos os controllers. Isso evita a criação de múltiplos objetos desnecessários e garante que toda a aplicação opere sobre o mesmo estado em memória. O construtor do serviço também aceita o repositório como parâmetro com valor padrão, permitindo injeção de dependência nos testes sem alterar o comportamento em produção.
+
+### SSR com separação de contextos
+
+A busca inicial de tarefas é feita server-side via `lib/api.server.ts`, que acessa o backend diretamente usando `API_URL` (variável de servidor). As operações do cliente (criar, editar, deletar) passam pelas Route Handlers do Next.js em `app/api/tasks/`, que atuam como proxy. Essa separação evita expor a URL interna do backend ao browser e mantém explícito o que roda no servidor versus no cliente.
+
+### Pontos de melhoria
+
+- Utilizar um banco real
+- Criar autenticação de usuários
+
 ## Testes
 
 ### Backend
